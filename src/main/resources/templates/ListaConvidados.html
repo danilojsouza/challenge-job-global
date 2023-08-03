@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width" />
+	<title>Lista de Convidados</title>
+<link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+rel="stylesheet"/>
+<link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}"
+rel="stylesheet"/>
+</head>
+<body>
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+	<div class="panel panel-default" style="margin: 10px">
+		<div class="panel-heading">
+			<h1 class="panel-title">Lista de convidados</h1>
+		</div>
+		<div class="panel-body">
+			<div th:if="${erro}" th:text="${erro}" class="text-danger"></div>
+			<form class="form-row" method="POST" th:object="${convidado}" th:action="@{/convidados}" style="margin: 20px 0">
+				<div class="form-group col-md-2">
+					<label for="nome">Nome</label>
+					<input id="nome" type="text" class="form-control" th:field="*{nome}" required/>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="acompanhantes">Qtd. Acompanhantes</label>
+					<input id="acompanhantes" type="text" class="form-control" th:field="*{quantidadeAcompanhantes}" required/>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="dataChegada">Data da Chegada</label>
+					<input id="dataChegada" type="date" class="form-control" th:field="*{dataChegada}" required/>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="dataSaida">Data da Saída</label>
+					<input id="dataSaida" type="date" class="form-control" th:field="*{dataSaida}" required/>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="valorDia">Valor do Dia</label>
+					<input id="valorDia" type="number" class="form-control" th:field="*{valorDia}" required/>
+				</div>
+				<div class="form-group col-md-2" style="padding-top: 25px !important;">
+					<input type="hidden" name="uri" th:value="${#httpServletRequest.getRequestURI()}"/>
+					<button type="submit" class="btn btn-primary">Adicionar</button>
+				</div>
+			</form>
+			<table class="table mt-2">
+				<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Acompanhantes</th>
+					<th>Data Chegada</th>
+					<th>Data Saída</th>
+					<th>Valor do Dia</th>
+					<th>Valor Total</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+					<tr th:each="convidado : ${convidados}">
+						<td th:text="${convidado.nome}"></td>
+						<td th:text="${convidado.quantidadeAcompanhantes}"></td>
+						<td th:text="${#temporals.format(convidado.dataChegada, 'dd/MM/yyyy')}"></td>
+						<td th:text="${#temporals.format(convidado.dataSaida, 'dd/MM/yyyy')}"></td>
+						<td th:text="'R$'+${#numbers.formatDecimal(convidado.valorDia, 1, 'POINT', 2, 'COMMA')}"></td>
+						<td th:text="'R$'+${#numbers.formatDecimal(convidado.valorTotal, 1, 'POINT', 2, 'COMMA')}"></td>
+						<td>
+							<a class="btn btn-success" th:href="@{/convidados/editar/{id}(id=${convidado.id})}">Editar</a>
+							<form method="POST" th:object="${convidado}" th:action="@{/convidados/excluir/{id}(id=${convidado.id})}" style="margin: 0;padding: 0;display: inline;">
+								<button type="submit" class="btn btn-danger">Excluir</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

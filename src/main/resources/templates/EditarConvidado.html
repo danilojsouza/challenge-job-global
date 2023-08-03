@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width"/>
+	<title>Editar Convidado</title>
+	<link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+	<link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+<div class="panel panel-default" style="margin: 10px">
+	<div class="panel-heading">
+		<h1 class="panel-title">Editar convidado</h1>
+	</div>
+	<div class="panel-body">
+		<div th:if="${erro}" th:text="${erro}" class="text-danger"></div>
+		<form class="form-row" method="POST" th:object="${convidado}" th:action="@{/convidados}" style="margin: 20px 0">
+			<input type="hidden" id="id" name="id" th:field="*{id}">
+			<div class="form-group col-md-2">
+				<label for="nome">Nome</label>
+				<input id="nome" type="text" class="form-control" th:field="*{nome}" required/>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="acompanhantes">Qtd. Acompanhantes</label>
+				<input id="acompanhantes" type="text" class="form-control" th:field="*{quantidadeAcompanhantes}" required/>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="dataChegada">Data da Chegada</label>
+				<input id="dataChegada" type="date" class="form-control" th:field="*{dataChegada}" required/>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="dataSaida">Data da Saída</label>
+				<input id="dataSaida" type="date" class="form-control" th:field="*{dataSaida}" required/>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="valorDia">Valor do Dia</label>
+				<input id="valorDia" type="number" class="form-control" th:field="*{valorDia}" required/>
+			</div>
+			<div class="form-group col-md-2" style="padding-top: 25px !important;">
+				<input type="hidden" name="uri" th:value="${#httpServletRequest.getRequestURI()}" />
+				<button type="submit" class="btn btn-primary">Editar</button>
+			</div>
+		</form>
+	</div>
+</div>
+</body>
+</html>
